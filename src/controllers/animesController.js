@@ -1,22 +1,13 @@
 const mongoose = require("mongoose");
-const { response } = require("express");
 
 const Anime = mongoose.model(process.env.ANIME_MODEL);
 
 const get = (req, res) => {
   Anime.find()
     .then((animes) => {
-      _sendResponse(res, {
-        code: 200,
-        data: animes,
-      });
+      _sendResponse(res, _creatResponse(200, animes));
     })
-    .catch((err) =>
-      _sendResponse(res, {
-        code: 500,
-        data: err,
-      })
-    );
+    .catch((err) => _setInternalErr(res, err));
 };
 
 const add = (req, res) => {
@@ -28,54 +19,53 @@ const add = (req, res) => {
   };
 
   Anime.create(animeToAdd)
-    .then((anime) => _creatAnime(anime, res))
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).send("something went wrong!, try again later");
-    });
+    .then((anime) => _sendResponse(res, _creatResponse(200, anime)))
+    .catch((err) => _setInternalErr(res, err));
 };
 
 const getById = (req, res) => {
-  Anime.findById(req.params.animeId).exec((err, anime) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("something went wrong!, try again later");
-    }
-
-    if (!anime) {
-      return res.status(404).send("Anime Not Found");
-    }
-
-    res.status(200).json(anime);
-  });
+  Anime.findById(req.params.animeId)
+    .exec()
+    .then((anime) => {
+      if (!anime) {
+        _sendResponse(res, _creatResponse(404, "Anime Not Found"));
+      } else {
+        _sendResponse(res, _creatResponse(200, anime));
+      }
+    })
+    .catch((err) => _setInternalErr(res, err));
 };
 
 const deleteById = (req, res) => {
-  Anime.findByIdAndDelete(req.params.animeId).exec((err, anime) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("something went wrong!, try again later");
-    }
-
-    if (!anime) {
-      return res.status(404).send("Anime Not Found");
-    }
-
-    res.status(200).json(anime);
-  });
+  Anime.findByIdAndDelete(req.params.animeId)
+    .exec()
+    .then((anime) => {
+      if (!anime) {
+        _sendResponse(res, _creatResponse(404, "Anime Not Found"));
+      } else {
+        _sendResponse(res, _creatResponse(200, anime));
+      }
+    })
+    .catch((err) => _setInternalErr(res, err));
 };
 
 //#region private
 
-const _creatAnime = (anime, res) => {
-  _sendResponse(res, {
-    code: 201,
-    data: anime,
-  });
-};
+const _creatResponse = (code, response) => ({
+  code: code,
+  data: response,
+});
 
 const _sendResponse = (res, response) => {
   res.status(response.code).json(response.data);
+};
+
+const _setInternalErr = (res, err) => {
+  console.log(err);
+  _sendResponse(
+    res,
+    _creatResponse(500, "something went wrong!, try again later")
+  );
 };
 
 //#endregion
