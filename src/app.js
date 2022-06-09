@@ -4,6 +4,8 @@ require("dotenv").config();
 require("./data/db");
 const animeRouter = require("./routes/animeRouter");
 const arcRouter = require("./routes/arcRouter");
+const helmet = require("helmet");
+const compression = require("compression");
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", process.env.CORS);
   next();
 });
+app.use(helmet());
+app.use(compression());
 
 //#endregion
 

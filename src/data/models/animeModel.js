@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const arcSchema = mongoose.Schema({
+const arcSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -11,7 +11,7 @@ const arcSchema = mongoose.Schema({
   },
 });
 
-const animeSchema = mongoose.Schema({
+const animeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,

@@ -4,9 +4,7 @@ const Anime = mongoose.model(process.env.ANIME_MODEL);
 
 const get = (req, res) => {
   Anime.find()
-    .then((animes) => {
-      _sendResponse(res, _creatResponse(200, animes));
-    })
+    .then((animes) => _sendResponse(res, _creatResponse(200, animes)))
     .catch((err) => _setInternalErr(res, err));
 };
 
