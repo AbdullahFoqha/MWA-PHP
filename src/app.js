@@ -24,7 +24,7 @@ app.use(compression());
 //#region custom middlewares
 
 app.use((req, res, next) => {
-  console.log(req.url);
+  console.log(`this is a url to check ${req.url}`);
   next();
 });
 
