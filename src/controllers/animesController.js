@@ -14,11 +14,12 @@ const get = (req, res) => {
 };
 
 const add = (req, res) => {
-  const { name, year, arcs } = req.body;
+  const { name, year, arcs, imageURL } = req.body;
   const animeToAdd = {
     name,
     year,
     arcs,
+    imageURL,
   };
 
   Anime.create(animeToAdd)
