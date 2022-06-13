@@ -5,14 +5,14 @@ const {
   getById,
   deleteById,
 } = require("../controllers/animesController");
-const { partialUpdate } = require("../controllers/test");
+
 const router = express.Router();
 
 const prefix = "/animes";
 
 router.route(prefix).get(get).post(add);
 
-router.route(`${prefix}/:animeId`).get(getById).patch(partialUpdate);
+router.route(`${prefix}/:animeId`).get(getById);
 
 router.route(`${prefix}/:animeId`).delete(deleteById);
 

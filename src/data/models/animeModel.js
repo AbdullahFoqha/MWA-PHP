@@ -5,6 +5,7 @@ const arcSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageURL: String,
   numberOfEpisodes: {
     type: Number,
     required: true,
@@ -16,6 +17,7 @@ const animeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageURL: String,
   year: {
     type: Number,
     required: true,

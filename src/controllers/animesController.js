@@ -4,7 +4,12 @@ const Anime = mongoose.model(process.env.ANIME_MODEL);
 
 const get = (req, res) => {
   Anime.find()
-    .then((animes) => _sendResponse(res, _creatResponse(200, animes)))
+    .then((animes) =>
+      _sendResponse(
+        res,
+        _creatResponse(process.env.STATUS_CODE_SUCCESS, animes)
+      )
+    )
     .catch((err) => _setInternalErr(res, err));
 };
 
@@ -17,7 +22,9 @@ const add = (req, res) => {
   };
 
   Anime.create(animeToAdd)
-    .then((anime) => _sendResponse(res, _creatResponse(200, anime)))
+    .then((anime) =>
+      _sendResponse(res, _creatResponse(process.env.STATUS_CODE_SUCCESS, anime))
+    )
     .catch((err) => _setInternalErr(res, err));
 };
 
@@ -26,9 +33,15 @@ const getById = (req, res) => {
     .exec()
     .then((anime) => {
       if (!anime) {
-        _sendResponse(res, _creatResponse(404, "Anime Not Found"));
+        _sendResponse(
+          res,
+          _creatResponse(process.env.STATUS_CODE_NOT_FOUND, "Anime Not Found")
+        );
       } else {
-        _sendResponse(res, _creatResponse(200, anime));
+        _sendResponse(
+          res,
+          _creatResponse(process.env.STATUS_CODE_SUCCESS, anime)
+        );
       }
     })
     .catch((err) => _setInternalErr(res, err));
@@ -39,9 +52,15 @@ const deleteById = (req, res) => {
     .exec()
     .then((anime) => {
       if (!anime) {
-        _sendResponse(res, _creatResponse(404, "Anime Not Found"));
+        _sendResponse(
+          res,
+          _creatResponse(process.env.STATUS_CODE_NOT_FOUND, "Anime Not Found")
+        );
       } else {
-        _sendResponse(res, _creatResponse(200, anime));
+        _sendResponse(
+          res,
+          _creatResponse(process.env.STATUS_CODE_SUCCESS, anime)
+        );
       }
     })
     .catch((err) => _setInternalErr(res, err));
@@ -62,7 +81,10 @@ const _setInternalErr = (res, err) => {
   console.log(err);
   _sendResponse(
     res,
-    _creatResponse(500, "something went wrong!, try again later")
+    _creatResponse(
+      process.env.STATUS_CODE_INTERNAL_SERVER_ERROR,
+      "something went wrong!, try again later"
+    )
   );
 };
 
