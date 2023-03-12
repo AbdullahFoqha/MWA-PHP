@@ -4,7 +4,6 @@ require('dotenv')
 .config()
 require('./data/db')
 const routes = require('./routes')
-const arcRouter = require('./routes/arcRouter')
 const helmet = require('helmet')
 const compression = require('compression')
 
